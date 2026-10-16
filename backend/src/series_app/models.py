@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import DateTime, Integer, String, Text, UniqueConstraint, func
+from sqlalchemy import DateTime, Integer, String, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from series_app.database import Base
@@ -8,7 +8,9 @@ from series_app.database import Base
 
 class WatchedEpisode(Base):
     __tablename__ = "watched_episodes"
-    __table_args__ = (UniqueConstraint("visitor_id", "episode_id", name="uq_watched_visitor_episode"),)
+    __table_args__ = (
+        UniqueConstraint("visitor_id", "episode_id", name="uq_watched_visitor_episode"),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
     visitor_id: Mapped[str] = mapped_column(String(36), index=True)

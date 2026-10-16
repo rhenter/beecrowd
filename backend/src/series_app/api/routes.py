@@ -88,7 +88,9 @@ async def show_details(
     )
     return {
         **show,
-        "seasons": [Season(number=number, episodes=items) for number, items in sorted(grouped.items())],
+        "seasons": [
+            Season(number=number, episodes=items) for number, items in sorted(grouped.items())
+        ],
         "watched_episode_ids": list(watched),
     }
 
@@ -148,7 +150,9 @@ def create_comment(
     return comment
 
 
-@router.put("/shows/{show_id}/episodes/{episode_id}/watched", status_code=status.HTTP_204_NO_CONTENT)
+@router.put(
+    "/shows/{show_id}/episodes/{episode_id}/watched", status_code=status.HTTP_204_NO_CONTENT
+)
 def set_watched(
     show_id: int,
     episode_id: int,
