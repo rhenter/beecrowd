@@ -200,7 +200,7 @@ uv run ruff check src tests
 uv run pytest --cov=series_app --cov-report=term-missing
 ```
 
-The GitHub Actions workflow runs backend linting and tests and builds the frontend on pushes and pull requests.
+The `Jenkinsfile` defines the CI pipeline used by Jenkins inside the evaluation VM. It installs backend dependencies, runs Ruff and pytest, and builds the frontend. Jenkins checks out this repository from GitHub; GitHub remains the source-code host, while Jenkins executes the pipeline.
 
 ## Project layout
 
@@ -209,7 +209,7 @@ beecrowd/
 ├── backend/                 # FastAPI app, domain services, migrations, and tests
 ├── frontend/                # React and Vite application
 ├── docs/                    # Presentation outline and visual previews
-├── .github/workflows/       # CI checks
+├── Jenkinsfile              # Jenkins CI pipeline
 ├── docker-compose.yml       # App and PostgreSQL services
 ├── Dockerfile               # Single application image, including the React bundle
 └── README.md                # Project and setup guide

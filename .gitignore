@@ -104,3 +104,4 @@ frontend/.yarn/
 .presentation-build/
 .presentation-output/
 *.validation.json
+reports/

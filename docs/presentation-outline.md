@@ -9,6 +9,7 @@
 3. Show how `AgentOS(base_app=app)` exposes the product routes and the agent runtime through one ASGI application.
 4. Explain the AI boundary: an `InsightProvider` interface, Hugging Face model configuration on the server, bounded prompt context, timeout, and a deterministic fallback.
 5. Explain the identity trade-off: a random HttpOnly browser cookie avoids an account flow for the demo, while production needs account authentication and authorization.
+6. Explain delivery: GitHub hosts the repository, while Jenkins runs the `Jenkinsfile` inside the evaluation VM to lint and test the backend and build the frontend.
 
 ### 10–20 min: live product walkthrough
 
@@ -56,6 +57,10 @@ The provider is isolated behind `InsightProvider`. A missing token disables mode
 ### Why is the model configuration not stored in the database?
 
 This challenge has one server-side model choice and no operator screen. Environment configuration keeps the scope small and avoids exposing provider credentials to the browser or product database. Database-backed selection can be added if runtime model changes become a real product need.
+
+### Why Jenkins if the code is on GitHub?
+
+GitHub is the source-code repository and webhook/integration point. Jenkins is the CI executor required by the evaluation environment: it checks out the repository inside the VM, runs the `Jenkinsfile`, verifies the backend, and builds the frontend. The two tools have complementary responsibilities.
 
 ### What would change for production?
 
