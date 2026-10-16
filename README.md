@@ -178,7 +178,7 @@ yarn install
 yarn dev
 ```
 
-The frontend runs at `http://localhost:7777` and uses `VITE_API_URL=http://localhost:8000` by default. When the frontend is hosted elsewhere, set `VITE_API_URL` to the public API URL during the frontend build. The API allows the configured `FRONTEND_URL` origin and accepts credentials for the anonymous visitor cookie.
+The frontend runs at `http://localhost:7777` and uses `VITE_API_URL=http://localhost:8000` by default. When the frontend is hosted elsewhere, set `VITE_API_URL` to the public API URL during the frontend build. `FRONTEND_URL` accepts a comma-separated list of allowed origins, and the API accepts credentials for the anonymous visitor cookie.
 
 ## API
 

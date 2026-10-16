@@ -13,7 +13,7 @@ services:
       OS_SECURITY_KEY: ${OS_SECURITY_KEY:-local-only-change-this-key}
       COOKIE_SECURE: ${COOKIE_SECURE:-false}
       TVMAZE_BASE_URL: ${TVMAZE_BASE_URL:-https://api.tvmaze.com}
-      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:7777}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:7777,http://127.0.0.1:7777}
     ports:
       - "8000:8000"
     depends_on:

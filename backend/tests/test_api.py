@@ -6,6 +6,19 @@ def test_search_contract(client):
     assert "series_visitor" in response.cookies
 
 
+def test_local_frontend_origins_are_allowed(client):
+    response = client.options(
+        "/api/search?q=example",
+        headers={
+            "Origin": "http://127.0.0.1:7777",
+            "Access-Control-Request-Method": "GET",
+            "Access-Control-Request-Headers": "content-type",
+        },
+    )
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == "http://127.0.0.1:7777"
+
+
 def test_watched_state_persists_for_browser(client):
     detail = client.get("/api/shows/1")
     assert detail.status_code == 200

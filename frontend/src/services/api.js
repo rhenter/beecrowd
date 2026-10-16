@@ -3,7 +3,7 @@ const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 export async function api(path, options = {}) {
   const { headers, ...requestOptions } = options;
   const response = await fetch(`${apiUrl}${path}`, {
-    credentials: 'same-origin',
+    credentials: 'include',
     ...requestOptions,
     headers: { 'Content-Type': 'application/json', ...headers },
   });
