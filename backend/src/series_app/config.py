@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     os_security_key: str = "local-only-change-this-key"
     cookie_secure: bool = False
     tvmaze_base_url: str = "https://api.tvmaze.com"
-    frontend_url: str = "http://localhost:7777,http://127.0.0.1:7777"
+    frontend_url: str = "http://localhost:7777,http://127.0.0.1:7777,http://0.0.0.0:7777"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
