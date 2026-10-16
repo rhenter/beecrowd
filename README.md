@@ -2,7 +2,7 @@
 
 [![Jenkins pipeline](https://img.shields.io/badge/Jenkins-pipeline-2088FF?logo=jenkins&logoColor=white)](Jenkinsfile)
 [![Coverage](https://img.shields.io/badge/coverage-pytest--cov-yellow?logo=pytest&logoColor=white)](#tests-and-quality-checks)
-[![License](https://img.shields.io/github/license/rhenter/beecrowd?label=license)](https://github.com/rhenter/beecrowd)
+[![License](https://img.shields.io/github/license/rhenter/beecrowd?label=license)](LICENSE)
 [![React](https://img.shields.io/badge/React-18.3.1-61DAFB?logo=react&logoColor=black)](https://react.dev/)
 [![Python](https://img.shields.io/badge/Python-%3E%3D3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![Open Source](https://img.shields.io/badge/open--source-100%25-brightgreen?logo=opensourceinitiative&logoColor=white)](https://github.com/rhenter/beecrowd)
@@ -224,7 +224,7 @@ To display the coverage results in Jenkins, install the [Coverage plugin](https:
 beecrowd/
 ├── backend/                 # FastAPI app, domain services, migrations, and tests
 ├── frontend/                # React and Vite application
-├── docs/                    # Presentation outline and visual previews
+├── docs/                    # Presentation PDF and visual previews
 ├── Jenkinsfile              # Jenkins CI pipeline
 ├── docker-compose.yml       # App and PostgreSQL services
 ├── Dockerfile               # Single application image, including the React bundle
@@ -241,4 +241,4 @@ beecrowd/
 
 ## Presentation
 
-The 30-minute interview outline is in [`docs/presentation-outline.md`](docs/presentation-outline.md). It covers architecture and trade-offs, a live walkthrough, code review, and likely reviewer questions.
+The presentation is available in [`docs/series-atlas-presentation.pdf`](docs/series-atlas-presentation.pdf). It covers architecture and trade-offs, a live walkthrough, code review, and likely reviewer questions.
