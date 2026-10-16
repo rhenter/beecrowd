@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
       setupFiles: './src/test/setup.js',
       css: false,
       coverage: {
-        reporter: ['text', 'html', 'json', 'cobertura'],
+        reporter: ['text', 'html', 'json', 'lcovonly'],
       },
     },
     server: {

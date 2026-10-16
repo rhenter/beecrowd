@@ -51,7 +51,7 @@ pipeline {
                 sourceDirectories: [[path: 'backend/src']]
             )
             recordCoverage(
-                tools: [[parser: 'COBERTURA', pattern: 'frontend/coverage/cobertura-coverage.xml']],
+                tools: [[parser: 'LCOV', pattern: 'frontend/coverage/lcov.info']],
                 id: 'frontend',
                 name: 'Frontend coverage',
                 sourceDirectories: [[path: 'frontend/src']]
