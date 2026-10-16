@@ -1,0 +1,53 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://series:series@db:5432/series_atlas}
+      AI_PROVIDER: ${AI_PROVIDER:-huggingface}
+      HF_TOKEN: ${HF_TOKEN:-}
+      HF_MODEL: ${HF_MODEL:-Qwen/Qwen3-4B-Instruct-2507}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:3b}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      OS_SECURITY_KEY: ${OS_SECURITY_KEY:-local-only-change-this-key}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      TVMAZE_BASE_URL: ${TVMAZE_BASE_URL:-https://api.tvmaze.com}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:7777}
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
+    ports:
+      - "7777:7777"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  db:
+    image: postgres:17-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: series_atlas
+      POSTGRES_USER: series
+      POSTGRES_PASSWORD: series
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U series -d series_atlas"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
