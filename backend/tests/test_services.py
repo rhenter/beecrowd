@@ -1,7 +1,13 @@
 import httpx
 import pytest
 
-from series_app.services.insights import fallback_insight, generate_insight, make_prompt
+from series_app.services.insights import (
+    AgnoInsightProvider,
+    build_agent,
+    fallback_insight,
+    generate_insight,
+    make_prompt,
+)
 from series_app.services.tvmaze import TVMazeClient, TVMazeError
 
 
@@ -22,6 +28,38 @@ async def test_tvmaze_adapter_normalizes_html_and_images():
         result = await TVMazeClient(session, "https://tvmaze.example").search("example")
     assert result[0]["summary"] == "Some & text"
     assert result[0]["image"].endswith("poster.jpg")
+
+
+@pytest.mark.asyncio
+async def test_tvmaze_adapter_normalizes_show_and_episode_defaults():
+    def respond(request):
+        if request.url.path.endswith("/episodes"):
+            return httpx.Response(200, json=[{"id": 8, "season": 0}])
+        return httpx.Response(200, json={"id": 7, "name": "Beyoncé: Live!", "rating": None})
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(respond)) as session:
+        client = TVMazeClient(session, "https://tvmaze.example/")
+        show = await client.get_show(7)
+        episodes = await client.get_episodes(7)
+
+    assert show["slug"] == "beyonce-live"
+    assert show["genres"] == []
+    assert show["image"] is None
+    assert episodes == [{
+        "id": 8,
+        "name": "Untitled",
+        "season": 0,
+        "number": None,
+        "airdate": None,
+        "summary": None,
+        "image": None,
+    }]
+
+
+def test_tvmaze_static_helpers_handle_empty_values():
+    assert TVMazeClient.slugify("  -- ") == ""
+    assert TVMazeClient._plain_text(None) is None
+    assert TVMazeClient._plain_text("") is None
 
 
 @pytest.mark.asyncio
@@ -72,6 +110,58 @@ async def test_provider_failure_returns_fallback():
 
     text, generated = await generate_insight(FailedProvider(), "prompt", "fallback")
     assert (text, generated) == ("fallback", False)
+
+
+@pytest.mark.asyncio
+async def test_none_provider_returns_fallback():
+    assert await generate_insight(None, "prompt", "fallback") == ("fallback", False)
+
+
+@pytest.mark.asyncio
+async def test_provider_result_is_trimmed_and_limited():
+    class Provider:
+        async def generate(self, prompt: str) -> str:
+            return "  " + "x" * 1700 + "  "
+
+    text, generated = await generate_insight(Provider(), "prompt", "fallback")
+
+    assert generated is True
+    assert len(text) == 1600
+
+
+@pytest.mark.asyncio
+async def test_agno_provider_returns_content():
+    class Result:
+        content = "  generated  "
+
+    class Agent:
+        def run(self, prompt):
+            assert prompt == "prompt"
+            return Result()
+
+    assert await AgnoInsightProvider(Agent()).generate("prompt") == "generated"
+
+
+@pytest.mark.asyncio
+async def test_agno_provider_rejects_empty_content():
+    class Agent:
+        def run(self, prompt):
+            return object()
+
+    with pytest.raises(RuntimeError, match="empty response"):
+        await AgnoInsightProvider(Agent()).generate("prompt")
+
+
+def test_build_agent_supports_configured_providers():
+    assert build_agent("ollama", "hf", None, "local", "http://ollama").model.id == "local"
+    assert build_agent(
+        "huggingface", "hf-model", "token", "local", "http://ollama"
+    ).model.id == "hf-model"
+
+
+def test_build_agent_rejects_unknown_provider():
+    with pytest.raises(ValueError, match="Unsupported AI provider"):
+        build_agent("unknown", "hf", None, "local", "http://ollama")
 
 
 @pytest.mark.asyncio

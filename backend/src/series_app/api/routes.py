@@ -135,7 +135,7 @@ def create_comment(
 ) -> Comment:
     comment = Comment(
         visitor_id=visitor_id,
-        display_name=payload.display_name.strip() or "Visitante",
+        display_name=payload.display_name.strip() or "Visitor",
         show_id=show_id,
         episode_id=payload.episode_id,
         body=payload.body.strip(),

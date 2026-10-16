@@ -1,5 +1,15 @@
 # Series Atlas | Beecrowd Technical Challenge
 
+[![Jenkins pipeline](https://img.shields.io/badge/Jenkins-pipeline-2088FF?logo=jenkins&logoColor=white)](Jenkinsfile)
+[![Coverage](https://img.shields.io/badge/coverage-pytest--cov-yellow?logo=pytest&logoColor=white)](#tests-and-quality-checks)
+[![License](https://img.shields.io/github/license/rhenter/beecrowd?label=license)](https://github.com/rhenter/beecrowd)
+[![React](https://img.shields.io/badge/React-18.3.1-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![Python](https://img.shields.io/badge/Python-%3E%3D3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Open Source](https://img.shields.io/badge/open--source-100%25-brightgreen?logo=opensourceinitiative&logoColor=white)](https://github.com/rhenter/beecrowd)
+[![Agno](https://img.shields.io/badge/Agno-AgentOS-7C3AED)](https://agno.com/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![API schemas](https://img.shields.io/badge/API-schemas-009688?logo=swagger&logoColor=white)](backend/src/series_app/schemas.py)
+
 Technical challenge solution for **Beecrowd**. The assignment describes an early-stage streaming platform, and Series Atlas is the application name used for this implementation.
 
 Series Atlas is a web application for discovering and tracking TV shows. Users can search the TVMaze catalog, browse episodes by season, mark episodes as watched, comment on shows and episodes, and generate contextual AI-powered insights. Built with React, FastAPI, PostgreSQL, SQLAlchemy, Agno AgentOS, and Vite.
@@ -198,9 +208,15 @@ The frontend runs at `http://localhost:7777` (or `http://0.0.0.0:7777` when open
 cd backend
 uv run ruff check src tests
 uv run pytest --cov=series_app --cov-report=term-missing
+
+cd ../frontend
+corepack yarn install --immutable
+corepack yarn test:coverage
 ```
 
-The `Jenkinsfile` defines the CI pipeline used by Jenkins inside the evaluation VM. It installs backend dependencies, runs Ruff and pytest, and builds the frontend. Jenkins checks out this repository from GitHub; GitHub remains the source-code host, while Jenkins executes the pipeline.
+The `Jenkinsfile` defines the CI pipeline used by Jenkins inside the evaluation VM. It installs backend dependencies, runs Ruff and pytest with an XML coverage report, runs the frontend tests with coverage, and builds the frontend. Jenkins checks out this repository from GitHub; GitHub remains the source-code host, while Jenkins executes the pipeline.
+
+To display the coverage results in Jenkins, install the [Coverage plugin](https://plugins.jenkins.io/coverage/) and configure the job to use this `Jenkinsfile`. The pipeline publishes separate `Backend coverage` and `Frontend coverage` results with `recordCoverage`; no Codecov client or project environment variable is required.
 
 ## Project layout
 

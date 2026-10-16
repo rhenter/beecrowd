@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class SearchResult(BaseModel):
@@ -38,7 +38,7 @@ class ShowDetails(SearchResult):
 
 
 class CommentCreate(BaseModel):
-    display_name: str = Field(default="Visitante", min_length=1, max_length=40)
+    display_name: str = Field(default="Visitor", min_length=1, max_length=40)
     body: str = Field(min_length=1, max_length=1000)
     episode_id: int | None = None
 
@@ -60,6 +60,19 @@ class WatchedUpdate(BaseModel):
 class InsightRequest(BaseModel):
     episode_id: int | None = None
     language: Literal["en", "pt-BR"] = "en"
+
+    @field_validator("language", mode="before")
+    @classmethod
+    def normalize_language(cls, value: object) -> object:
+        if not isinstance(value, str):
+            return value
+
+        normalized = value.strip().replace("_", "-").lower()
+        if normalized == "pt" or normalized.startswith("pt-"):
+            return "pt-BR"
+        if normalized == "en" or normalized.startswith("en-"):
+            return "en"
+        return value
 
 
 class InsightResponse(BaseModel):

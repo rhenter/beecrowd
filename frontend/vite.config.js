@@ -7,6 +7,15 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
+    test: {
+      environment: 'jsdom',
+      globals: true,
+      setupFiles: './src/test/setup.js',
+      css: false,
+      coverage: {
+        reporter: ['text', 'html', 'json', 'cobertura'],
+      },
+    },
     server: {
       host: '0.0.0.0',
       port: 7777,

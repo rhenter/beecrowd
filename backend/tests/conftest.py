@@ -12,7 +12,13 @@ from series_app.main import app
 
 class FakeTVMaze:
     async def search(self, query: str) -> list[dict]:
-        return [{"id": 1, "name": "The Example", "slug": "the-example", "genres": ["Drama"], "premiered": "2020-01-01"}]
+        return [{
+            "id": 1,
+            "name": "The Example",
+            "slug": "the-example",
+            "genres": ["Drama"],
+            "premiered": "2020-01-01",
+        }]
 
     async def get_show(self, show_id: int) -> dict:
         return {
@@ -31,7 +37,13 @@ class FakeTVMaze:
     async def get_episodes(self, show_id: int) -> list[dict]:
         return [
             {"id": 101, "name": "Pilot", "season": 1, "number": 1, "airdate": "2020-01-01"},
-            {"id": 102, "name": "Second Chances", "season": 1, "number": 2, "airdate": "2020-01-08"},
+            {
+                "id": 102,
+                "name": "Second Chances",
+                "season": 1,
+                "number": 2,
+                "airdate": "2020-01-08",
+            },
         ]
 
 
