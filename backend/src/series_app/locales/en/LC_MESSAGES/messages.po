@@ -1,0 +1,28 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: series-atlas\n"
+"PO-Revision-Date: 2026-10-16 00:00+0000\n"
+"Last-Translator: Series Atlas team\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "English"
+msgstr "English"
+
+msgid "genres not provided"
+msgstr "genres not provided"
+
+msgid "Summary unavailable."
+msgstr "Summary unavailable."
+
+msgid " The community left %(count)d comment(s) for this context."
+msgstr " The community left %(count)d comment(s) for this context."
+
+msgid "%(title)s combines elements of %(genres)s. The summary highlights: %(summary)s%(note)s"
+msgstr "%(title)s combines elements of %(genres)s. The summary highlights: %(summary)s%(note)s"
+
+msgid "%(title)s is associated with %(genres)s. There is not enough summary data for a more specific analysis yet.%(note)s"
+msgstr "%(title)s is associated with %(genres)s. There is not enough summary data for a more specific analysis yet.%(note)s"

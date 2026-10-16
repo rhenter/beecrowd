@@ -47,7 +47,7 @@ def test_fallback_is_transparent_and_grounded():
 def test_insight_prompt_uses_requested_language():
     show = {"name": "Example", "genres": ["Drama"], "summary": "A journey."}
     prompt = make_prompt(show, None, [], "pt-BR")
-    assert "Brazilian Portuguese (pt-BR)" in prompt
+    assert "Português brasileiro (pt-BR)" in prompt
     assert "Return only the insight text" in prompt
 
 
@@ -55,6 +55,13 @@ def test_fallback_uses_requested_language():
     show = {"name": "Exemplo", "genres": ["Drama"], "summary": "Uma jornada."}
     text = fallback_insight(show, None, [], "pt-BR")
     assert "A sinopse destaca" in text
+
+
+def test_fallback_uses_english_catalog_by_default():
+    show = {"name": "Example", "genres": [], "summary": None}
+    text = fallback_insight(show, None, [])
+    assert "genres not provided" in text
+    assert "There is not enough summary data" in text
 
 
 @pytest.mark.asyncio

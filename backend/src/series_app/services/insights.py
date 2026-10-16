@@ -7,6 +7,8 @@ from agno.models.huggingface import HuggingFace
 from agno.models.ollama import Ollama
 from starlette.concurrency import run_in_threadpool
 
+from series_app.localization import translate
+
 logger = logging.getLogger(__name__)
 
 
@@ -71,18 +73,25 @@ def fallback_insight(
     language: str = "en",
 ) -> str:
     title = episode["name"] if episode else show["name"]
-    genres = ", ".join(show.get("genres") or []) or "genres not provided"
+    genres = ", ".join(show.get("genres") or []) or translate("genres not provided", language)
     summary = _plain_text((episode or show).get("summary"))
-    if language == "pt-BR":
-        note = f" A comunidade deixou {len(comments)} comentário(s) neste contexto." if comments else ""
-        if summary:
-            return f"{title} combina elementos de {genres}. A sinopse destaca: {summary[:340]}{note}"
-        return f"{title} está associado a {genres}. Ainda não há dados suficientes para uma análise mais específica.{note}"
-
-    note = f" The community left {len(comments)} comment(s) for this context." if comments else ""
+    note = (
+        translate(" The community left %(count)d comment(s) for this context.", language)
+        % {"count": len(comments)}
+        if comments
+        else ""
+    )
     if summary:
-        return f"{title} combines elements of {genres}. The summary highlights: {summary[:340]}{note}"
-    return f"{title} is associated with {genres}. There is not enough summary data for a more specific analysis yet.{note}"
+        return translate(
+            "%(title)s combines elements of %(genres)s. The summary highlights: "
+            "%(summary)s%(note)s",
+            language,
+        ) % {"title": title, "genres": genres, "summary": summary[:340], "note": note}
+    return translate(
+        "%(title)s is associated with %(genres)s. There is not enough summary data "
+        "for a more specific analysis yet.%(note)s",
+        language,
+    ) % {"title": title, "genres": genres, "note": note}
 
 
 def make_prompt(
@@ -92,8 +101,10 @@ def make_prompt(
     language: str = "en",
 ) -> str:
     scope = "episode" if episode else "show"
-    language_name = "Brazilian Portuguese (pt-BR)" if language == "pt-BR" else "English"
-    summary = _plain_text((episode or show).get("summary")) or "Summary unavailable."
+    language_name = translate("English", language)
+    summary = _plain_text((episode or show).get("summary")) or translate(
+        "Summary unavailable.", language
+    )
     safe_comments = "\n".join(f"- {comment[:500]}" for comment in comments[:20]) or "No comments."
     return (
         f"Produce a brief analysis of this {scope} in {language_name}.\n"
