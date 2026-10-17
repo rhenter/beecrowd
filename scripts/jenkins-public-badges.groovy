@@ -7,6 +7,7 @@ import hudson.ExtensionList
 import hudson.model.Actionable
 import hudson.model.Job
 import hudson.model.Run
+import hudson.model.Item
 import io.jenkins.plugins.coverage.metrics.steps.CoverageBuildAction
 import io.jenkins.plugins.coverage.metrics.model.Baseline
 import io.jenkins.plugins.coverage.metrics.model.ElementFormatter
@@ -19,6 +20,14 @@ if (instance.authorizationStrategy instanceof FullControlOnceLoggedInAuthorizati
     strategy.add(Jenkins.ADMINISTER, 'authenticated')
     strategy.add(PublicBuildStatusAction.VIEW_STATUS, 'anonymous')
     instance.authorizationStrategy = strategy
+    instance.save()
+}
+
+// Allow reviewers to inspect builds and coverage without granting write access.
+if (instance.authorizationStrategy instanceof GlobalMatrixAuthorizationStrategy) {
+    def strategy = instance.authorizationStrategy
+    strategy.add(Jenkins.READ, 'anonymous')
+    strategy.add(Item.READ, 'anonymous')
     instance.save()
 }
 
