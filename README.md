@@ -1,7 +1,7 @@
 # Series Atlas | Beecrowd Technical Challenge
 
-[![Jenkins pipeline](https://img.shields.io/badge/Jenkins-pipeline-2088FF?logo=jenkins&logoColor=white)](Jenkinsfile)
-[![Coverage](https://img.shields.io/badge/coverage-pytest--cov-yellow?logo=pytest&logoColor=white)](#tests-and-quality-checks)
+[![Jenkins pipeline](https://jenkins.henter.com.br/buildStatus/icon?job=beecrowd)](https://jenkins.henter.com.br/job/beecrowd/)
+[![Backend coverage](https://jenkins.henter.com.br/buildStatus/icon?job=beecrowd&subject=Backend%20coverage&status=%24%7BlineCoverage%7D&color=%24%7BcolorLineCoverage%7D)](https://jenkins.henter.com.br/job/beecrowd/lastBuild/backend/)
 [![License](https://img.shields.io/github/license/rhenter/beecrowd?label=license)](LICENSE)
 [![React](https://img.shields.io/badge/React-18.3.1-61DAFB?logo=react&logoColor=black)](https://react.dev/)
 [![Python](https://img.shields.io/badge/Python-%3E%3D3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
